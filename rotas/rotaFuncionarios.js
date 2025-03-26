@@ -4,15 +4,15 @@
 import { Router } from "express"; //micro-aplicação HTTP
 import funcionarioCtrl from "../Controle/funcionarioCtrl.js";
 
-const catCtrl = new funcionarioCtrl();
-const rotafuncionario = Router();
+const funcCtrl = new funcionarioCtrl();
+const rotaFuncionario = Router();
 
-rotafuncionario.post("/", catCtrl.gravar);
-rotafuncionario.put("/:codigo", catCtrl.editar);
-rotafuncionario.patch("/:codigo", catCtrl.editar);
-rotafuncionario.delete("/:codigo", catCtrl.excluir);
-rotafuncionario.get("/:codigo", catCtrl.consultar);
-rotafuncionario.get("/",catCtrl.consultar);
+rotaFuncionario.post("/", funcCtrl.gravar);
+rotaFuncionario.put("/:codigo", funcCtrl.editar);
+rotaFuncionario.patch("/:codigo", funcCtrl.editar);
+rotaFuncionario.delete("/:codigo", funcCtrl.excluir);
+rotaFuncionario.get("/:codigo", funcCtrl.consultar);
+rotaFuncionario.get("/",funcCtrl.consultar);
 
-export default rotafuncionario;
+export default rotaFuncionario;
 
