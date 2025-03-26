@@ -8,6 +8,7 @@ const porta = 4000;
 const app = express(); 
 app.use(express.json());
 
+
 app.use(cors({
                 "origin":"*",
                 "Access-Control-Allow-Origin":'*'
