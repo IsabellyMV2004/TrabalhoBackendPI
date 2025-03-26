@@ -1,87 +1,91 @@
 import FuncionarioDAO from "../Persistencia/funcionarioDAO.js";
-
-export default class Funcionario {
-    // Atributos privados
+export default class Funcionario{
+    //atributos privados
     #codigo;
     #nome;
     #cpf;
-    #nivel;
     #cargo;
+    #nivel;
 
-    // Construtor da classe
-    constructor(codigo = null, nome = "", cpf = "", cargo = "", nivel = "") {
-        this.#codigo = codigo; // Código gerado automaticamente pelo banco
-        this.#nome = nome;
-        this.#cpf = cpf;
-        this.#cargo = cargo;
-        this.#nivel = nivel;
-    }
-
-    // Métodos GET e SET
-    get codigo() {
+    get codigo(){
         return this.#codigo;
     }
 
-    get nome() {
+    set codigo(novoCodigo){
+        this.#codigo=novoCodigo;
+    } 
+
+    get nome(){
         return this.#nome;
     }
 
-    set nome(value) {
-        this.#nome = value;
+    set nome(novaDescricao){
+        this.#nome = novaDescricao;
     }
 
-    get cpf() {
+    get cpf(){
         return this.#cpf;
     }
 
-    set cpf(value) {
-        this.#cpf = value;
+    set cpf(novoCPF){
+        this.#cpf = novoCPF;
     }
 
-    get cargo() {
+    get cargo(){
         return this.#cargo;
     }
 
-    set cargo(value) {
-        this.#cargo = value;
+    set cargo(novoCargo){
+        this.#cargo = novoCargo;
     }
 
-    get nivel() {
+    get nivel(){
         return this.#nivel;
     }
 
-    set nivel(value) {
-        this.#nivel = value;
+    set nivel(novaNivel){
+        this.#nivel = novaNivel;
     }
 
-    // Método toJSON para conversão em JSON
-    toJSON() {
+    //construtor (criador de um funcionario)
+    constructor(codigo=0, nome="", cpf="", cargo="", nivel=""){
+        this.#codigo=codigo;
+        this.#nome=nome;
+        this.#cpf=cpf;
+        this.#cargo=cargo;
+        this.#nivel=nivel;
+    }
+
+    //override do método toJSON
+    //o método toJSON é chamado automaticamente quando um funcionario
+    //precisar ser convertido no formato JSON
+    toJSON(){
         return {
-            "codigo": this.#codigo,
-            "nome": this.#nome,
-            "cpf": this.#cpf,
-            "cargo": this.#cargo,
-            "nivel": this.#nivel
-        };
+            "codigo":this.#codigo,
+            "nome":this.#nome,
+            "cpf":this.#cpf,
+            "cargo":this.#cargo,
+            "nivel":this.#nivel
+        }
     }
 
-    // Métodos para manipulação no banco de dados
-    async incluir() {
+    async incluir(){
+        //instanciar a camada de persistencia do funcionario
         const funcDAO = new FuncionarioDAO();
-        this.#codigo = await funcDAO.incluir(this); // Recebe o código gerado pelo banco
+        await funcDAO.incluir(this); //this referência a si mesmo
     }
 
-    async consultar(termo) {
+    async consultar(termo){
         const funcDAO = new FuncionarioDAO();
         return await funcDAO.consultar(termo);
     }
 
-    async excluir() {
+    async excluir(){
         const funcDAO = new FuncionarioDAO();
         await funcDAO.excluir(this);
     }
 
-    async alterar() {
+    async alterar(){
         const funcDAO = new FuncionarioDAO();
         await funcDAO.alterar(this);
     }

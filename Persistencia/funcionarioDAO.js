@@ -1,37 +1,39 @@
+//DAO - Data Access Object
 import Funcionario from "../Modelo/funcionario.js";
-import conectar from "./Conexao.js";
 
+import conectar from "./Conexao.js";
 export default class FuncionarioDAO {
     constructor() {
         this.init();
     }
 
     async init() {
-        let conexao;
-        try {
-            conexao = await conectar();
+        try 
+        {
+            const conexao = await conectar(); //retorna uma conexão
             const sql = `
-                CREATE TABLE IF NOT EXISTS funcionario(
-                    codigo INT NOT NULL AUTO_INCREMENT,
-                    nome VARCHAR(50) NOT NULL,
-                    cpf VARCHAR(14) NOT NULL,
-                    cargo VARCHAR(30) NOT NULL,
-                    nivel VARCHAR(30) NOT NULL,
-                    CONSTRAINT pk_funcionario PRIMARY KEY(codigo)
-                );
-            `;
+            CREATE TABLE IF NOT EXISTS funcionario(
+                func_codigo INT NOT NULL AUTO_INCREMENT,
+                func_nome VARCHAR(200) NOT NULL,
+                func_cpf VARCHAR(14) NOT NULL,
+                func_cargo VARCHAR(30) NOT NULL,
+                func_nivel VARCHAR(30) NOT NULL DEFAULT 0,
+              
+                CONSTRAINT pk_funcionario PRIMARY KEY(func_codigo)
+            )
+        `;
             await conexao.execute(sql);
-        } catch (erro) {
-            console.log("Erro ao iniciar a tabela funcionario!");
-        } finally {
-            if (conexao) await conexao.release();
+            await conexao.release();
+        }
+        catch (e) {
+            console.log("Não foi possível iniciar o banco de dados: " + e.message);
         }
     }
 
     async incluir(funcionario) {
         if (funcionario instanceof Funcionario) {
             const conexao = await conectar();
-            const sql = `INSERT INTO funcionario(func_nome,func_cpf, func_cargo, func_nivel)
+            const sql = `INSERT INTO funcionario(func_nome,func_cpf,func_cargo,func_nivel)
                 values(?,?,?,?)
             `;
             let parametros = [
@@ -48,7 +50,7 @@ export default class FuncionarioDAO {
     async alterar(funcionario) {
         if (funcionario instanceof Funcionario) {
             const conexao = await conectar();
-            const sql = `UPDATE funcionario SET func_nome=?,func_cpf=?,func_cargo=?,func_nivel=?)
+            const sql = `UPDATE funcionario SET func_nome=?,func_cpf=?,func_cargo=?,func_nivel=?
                 WHERE func_codigo = ?
             `;
             let parametros = [
@@ -80,7 +82,6 @@ export default class FuncionarioDAO {
         const [linhas, campos] = await conexao.execute(sql, parametros);
         let listaFuncionarios = [];
         for (const linha of linhas) {
-            const categoria = new Categoria(linha['codigo'],linha["nome"]);    
             const funcionario = new Funcionario(
                 linha['func_codigo'],
                 linha['func_nome'],
