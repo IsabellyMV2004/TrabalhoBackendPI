@@ -30,7 +30,7 @@ export default class FuncionarioDAO {
         }
     }
 
-    async incluir(funcionario) {
+    async gravar(funcionario) {
         if (funcionario instanceof Funcionario) {
             const conexao = await conectar();
             const sql = `INSERT INTO funcionario(func_nome,func_cpf,func_cargo,func_nivel)

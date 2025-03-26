@@ -69,10 +69,10 @@ export default class Funcionario{
         }
     }
 
-    async incluir(){
+    async gravar(){
         //instanciar a camada de persistencia do funcionario
         const funcDAO = new FuncionarioDAO();
-        await funcDAO.incluir(this); //this referência a si mesmo
+        await funcDAO.gravar(this); //this referência a si mesmo
     }
 
     async consultar(termo){
