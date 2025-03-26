@@ -1,4 +1,4 @@
-import rotaFuncionario from './rotas/rotaFuncionarios.js';
+import rotaFuncionario from './rotas/rotaFuncionarios';
 
 dotenv.config();
 
@@ -18,4 +18,8 @@ app.use(express.static('./publico'));
 
 
 app.use("/cadastro_funcionarios",rotaFuncionario);
+
+app.listen(porta, host, () => {
+        console.log(`Servidor escutando em http://${host}:${porta}`)
+    });
 
